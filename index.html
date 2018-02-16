@@ -4,83 +4,62 @@
 
     <head>
     
-        <meta charset="utf-8">
-        <title>Music Player</title>
+        <meta charset="utf-8">    
         
         <script src="js/jquery-3.1.1.min.js"></script>
-        <script src="p5/p5.min.js"></script>
-        <script src="p5/addons/p5.sound.min.js"></script>
+        <script src="p5/p5.js"></script>
+        <script src="p5/addons/p5.sound.js"></script>
+        <script src="p5/addons/p5.dom.js"></script>
         <script src="dist/NexusUI.js"></script>
+        
         <script src="js/script.js"></script>
         
-        <link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script" rel="stylesheet">
-        
-        <link href="css/style.css" rel="stylesheet">
     
     </head>
     
     <body>
         
-        <div id="cassetera">
-            <div id="dial"></div>
-        </div>
-        <div id="letrero">Volume</div>
-        <div id="arrow"></div>
+        <div id="piano"></div>
+    
+        <div id="seq"></div>
         
-        <div id="buttons">
-            
-            <div class="b" id="pause"></div><div class="b" id="stop"></div><div class="b" id="play"></div><div class="b" id="next"></div><div class="b" id="prev"></div>
-            
-        
-        </div>
+        <div id="start"></div>
     
     </body>
     
     <script>
         
-        var current = 0, past;
+        var piano = new Nexus.Piano('#piano',{
+            'size': [500,125],
+            'mode': 'button',  // 'button', 'toggle', or 'impulse'
+            'lowNote': 60,
+            'highNote': 96
+        })
     
-        $("#play").on('click',function(){
-            
-            play(current);
+        piano.on('change',function(v) {
+            //console.log(v);
+            keyPressed(v);
+
+        })
+    
+        var sequencer = new Nexus.Sequencer('#seq',{
+         'size': [320,200],
+         'mode': 'toggle',
+         'rows': 5,
+         'columns': 8
         })
         
-        $("#stop").on('click',function(){
-            
-            stop(current);
+        sequencer.on('change',function(v) {
+          
+        })
+        
+        sequencer.on('step',function(step) {
+          //console.log(step);
+            playStep(step)
         })
         
         
-        $("#pause").on('click',function(){
-            
-            pause(current);
-        })
-        
-        $("#next").on('click',function(){
-            
-            past = current;
-            current = (current+1)%3;
-            
-            next(current, past);
-        })
-        
-        $("#prev").on('click',function(){
-            
-            if(current == 0){
-                current = 2;
-                past = 0;
-            }else{
-                past = current;
-                current = (current-1)%3;
-            }
-            
-            prev(current, past);
-            
-            
-        })
     
     </script>
-   
-    
 
 </html>
